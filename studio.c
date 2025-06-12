@@ -5,11 +5,11 @@
 #include"studio.h"
 #include<string.h>
 
-typedef struct studio;
+typedef struct studio
 {
     char nome[100];
     char corso[100];
-    int priorita: //2 = alta, 1 = media, 0 = bassa
+    int priorita; //2 = alta, 1 = media, 0 = bassa
     int completata; // 1 = completata, 0 = in corso, -1 = non iniziata
     int durata; // in minuti
     int dataScadenza; // formato AAAAMMGG (es. 20231005 per il 5 ottobre 2023)
@@ -25,17 +25,6 @@ Studio newStudio(char *nome, char *corso, int priorita, int durata, int dataScad
     studio->durata = durata;
     studio->dataScadenza = dataScadenza;
     return studio;
-}
-
-void printStudio(Studio studio) 
-{
-    printf("Nome: %s, Corso: %s, Priorità: %d, Completata: %d Durata: %d minuti, Data di Scadenza: %d\n", 
-           studio->nome, studio->corso, studio->priorita, studio->completata, studio->durata, studio->dataScadenza);
-}
-
-void freeStudio(Studio studio) 
-{
-    free(studio);
 }
 
 Studio inputStudio() 
@@ -63,9 +52,8 @@ Studio inputStudio()
     while(dataScadenza <= 20250101) 
     {
     printf("Inserisci la data di scadenza (formato AAAAMMGG): ");
-    }
-
     scanf("%d", &dataScadenza);
+    }
 
     return newStudio(nome, corso, priorita, durata, dataScadenza);
 }

@@ -91,3 +91,19 @@ Item removeListItem(List list, Item item)
         }
     }
 }
+
+Item getListItem(List list, int pos)
+{
+    struct node *p;
+    int i;
+
+    if(pos<0 || pos>=list->size)
+    {
+        printf("Indice fuori dai limiti\n");
+        return NULL;
+    }
+
+    for(p=list->head, i=0; p!=NULL && i<pos; p=p->next, i++);
+
+    return p->item;
+}
