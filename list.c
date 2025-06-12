@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include"item.h"
 #include"list.h"
+#include"studio.h"
 
 struct list
 {
@@ -57,11 +58,11 @@ void printList(List list)
     
     for(p=list->head; p!=NULL; p=p->next)
     {
-        outputItem(p->item);
+        outputStudio(p->item);
     }
 }
 
-Item removeListItem(List list, Item item)
+/*Item removeListItem(List list, Item item)
 {
     struct node *p, *prev;
     Item i;
@@ -90,7 +91,7 @@ Item removeListItem(List list, Item item)
             }
         }
     }
-}
+}*/
 
 Item getListItem(List list, int pos)
 {

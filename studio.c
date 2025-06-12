@@ -1,9 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
+#include<strings.h>
 #include"item.h"
 #include"list.h"
 #include"studio.h"
-#include<string.h>
+
 
 typedef struct studio
 {
@@ -30,30 +32,46 @@ Studio newStudio(char *nome, char *corso, int priorita, int durata, int dataScad
 Studio inputStudio() 
 {
     char nome[100], corso[100];
-    int priorita, durata, dataScadenza;
+    int priorita = -1, durata = 0, dataScadenza = 0;
+
+    while (getchar() != '\n'); // pulizia del buffer di input
 
     printf("Inserisci il nome dello studio: ");
-    scanf("%s", nome);
-    printf("Inserisci il corso: ");
-    scanf("%s", corso);
+    fgets(nome, sizeof(nome), stdin);
+    nome[strcspn(nome, "\n")] = 0;  // rimuove '\n' se presente
 
-    while(priorita < 0 || priorita > 2) 
+    printf("Inserisci il corso: ");
+    fgets(corso, sizeof(corso), stdin);
+    corso[strcspn(corso, "\n")] = 0;
+
+    while (priorita < 0 || priorita > 2) 
     {
         printf("Inserisci la priorità (2 = alta, 1 = media, 0 = bassa): ");
-        scanf("%d", &priorita);
+        if (scanf("%d", &priorita) != 1) {
+            while (getchar() != '\n'); // pulizia input
+            priorita = -1; // forza ripetizione
+        }
     }
 
-    while(durata <= 0) 
+    while (durata <= 0) 
     {
-    printf("Inserisci la durata in minuti: ");
-    scanf("%d", &durata);
+        printf("Inserisci la durata in minuti: ");
+        if (scanf("%d", &durata) != 1) {
+            while (getchar() != '\n');
+            durata = 0;
+        }
     }
 
-    while(dataScadenza <= 20250101) 
+    while (dataScadenza <= 20250101) 
     {
-    printf("Inserisci la data di scadenza (formato AAAAMMGG): ");
-    scanf("%d", &dataScadenza);
+        printf("Inserisci la data di scadenza (formato AAAAMMGG): ");
+        if (scanf("%d", &dataScadenza) != 1) {
+            while (getchar() != '\n');
+            dataScadenza = 0;
+        }
     }
+
+    while (getchar() != '\n');
 
     return newStudio(nome, corso, priorita, durata, dataScadenza);
 }
@@ -67,4 +85,52 @@ void outputStudio(Studio studio)
 void deleteStudio(Studio studio) 
 {
     free(studio);
+}
+
+int controlloStudio(Studio studio, int dataOggi) 
+{
+    if (studio == NULL) {
+            printf("Errore: studio non trovato nella lista.\n");
+            return -1;
+        }
+        
+        if (studio->completata == -1 && dataOggi >= studio->dataScadenza) {
+            printf("ATTENZIONE: Lo studio \"%s\" è scaduto e non è stato iniziato.\n", studio->nome);
+        } else if (studio->completata == 0 && dataOggi >= studio->dataScadenza) {
+            printf("ATTENZIONE: Lo studio \"%s\" è scaduto ma è ancora in corso.\n", studio->nome);
+        } else if (studio->completata == 1) {
+            printf("Lo studio \"%s\" è stato completato\n", studio->nome);
+        } else {
+            printf("Lo studio \"%s\" è ancora in tempo.\n", studio->nome);
+        }
+}
+
+int aggiornaCompletamento(Studio studio, int nuovoStato, const char *nomeStudio) 
+{
+    if (nuovoStato < -1 || nuovoStato > 1) {
+        printf("Errore: stato non valido. Deve essere -1, 0 o 1.\n");
+        return -1;
+    }
+    else if (studio == NULL) 
+    {
+        printf("Errore: studio non trovato nella lista.\n");
+        return -1;
+    }
+    else if((strcasecmp(studio->nome, nomeStudio) != 0 )) 
+    {
+        printf("Nessuno studio trovato con il nome specificato.\n");
+        return -1;
+    }
+    else if (strcasecmp(studio->nome, nomeStudio) == 0 && studio->completata != nuovoStato) 
+    {
+        studio->completata = nuovoStato;
+        printf("Stato dello studio \"%s\" aggiornato a %d.\n", studio->nome, nuovoStato);
+        return 1;
+    }
+    else if(strcasecmp(studio->nome, nomeStudio) == 0 && studio->completata == nuovoStato) 
+    {
+        printf("Lo stato dello studio \"%s\" è già %d.\n", studio->nome, nuovoStato);
+        return 0;
+    }
+      
 }

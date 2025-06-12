@@ -5,6 +5,4 @@
 #include "list.h"
 
 void generaReport(List lista);
-void stampaCompletate(List lista);
-void stampaInCorso(List lista);
-void stampaNonIniziate(List lista);
+void aggiornaProgresso(List lista);
