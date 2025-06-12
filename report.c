@@ -21,7 +21,7 @@ void generaReport(List lista)
     printf("========================\n");
 }
 
-void aggiornaCompletamentoDaNome(List lista, char *nomeStudio, int nuovoStato) 
+void aggiornaCompletamentoNome(List lista, char *nomeStudio, int nuovoStato) 
 {
     int trovato=0;
 

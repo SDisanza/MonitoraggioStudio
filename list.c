@@ -62,36 +62,19 @@ void printList(List list)
     }
 }
 
-/*Item removeListItem(List list, Item item)
+void freeList(List list)
 {
-    struct node *p, *prev;
-    Item i;
+    struct node *p, *next;
 
-    if(isEmpty(list))
+    for(p=list->head; p!=NULL; p=next)
     {
-        fprintf(stderr, "La lista è vuota\n");
-        return NULL;
+        next=p->next;
+        freeItem(p->item);
+        free(p);
     }
 
-    for(p=list->head; p!=NULL; prev=p, p=p->next)
-    {
-        if(cmpItem(p->item, item)==0)
-        {
-            if(p==list->head)
-            {
-                return(removeHead(list));
-            }
-            else
-            {
-                prev->next=p->next;
-                i=p->item;
-                free(p);
-                list->size--;
-                return i;
-            }
-        }
-    }
-}*/
+    free(list);
+}
 
 Item getListItem(List list, int pos)
 {

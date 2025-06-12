@@ -79,7 +79,7 @@ int main()
                 scanf("%d", &stato);
                 while(getchar() != '\n'); // pulisci buffer input
 
-                aggiornaCompletamentoDaNome(lista, nomestudio, stato);
+                aggiornaCompletamentoNome(lista, nomestudio, stato);
 
                                 
                 break;    
@@ -89,7 +89,7 @@ int main()
                 printf("CIAO.\n");
                 sleep(2);
                 system("clear");
-                free
+                freeList(lista);
                 break;
             default:
                 printf("Scelta non valida. Riprova.\n");

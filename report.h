@@ -6,3 +6,4 @@
 
 void generaReport(List lista);
 void aggiornaProgresso(List lista);
+void aggiornaCompletamentoNome(List lista, char *nomeStudio, int nuovoStato);

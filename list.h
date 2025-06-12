@@ -7,5 +7,5 @@ int isEmpty(List list);
 void addHead(List list, Item item);
 int sizeList(List list);
 void printList(List list);
-Item removeListItem(List list, Item item);
+void freeList(List list);
 Item getListItem(List list, int pos);

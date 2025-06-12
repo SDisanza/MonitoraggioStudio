@@ -9,3 +9,5 @@ Studio newStudio(char *nome, char *corso, int priorita, int durata, int dataScad
 Studio inputStudio();
 void outputStudio(Studio studio);
 void deleteStudio(Studio studio);
+int aggiornaCompletamento(Studio studio, int nuovoStato, const char *nomeStudio);
+int controlloStudio(Studio studio, int dataOggi);
