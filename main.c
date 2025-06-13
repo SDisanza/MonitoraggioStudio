@@ -35,6 +35,8 @@ int main()
                 system("clear");       
                 printf("Inserimento di un nuovo studio...\n");
                 sleep(2);
+                while (getchar() != '\n');
+
                 studio = inputStudio();
                 if (studio == NULL) 
                 {
@@ -80,10 +82,8 @@ int main()
                 printf("Inserisci il nuovo stato (-1 = non iniziata, 0 = in corso, 1 = completata): ");
                 scanf("%d", &stato);
                 while(getchar() != '\n'); //Pulisce buffer input
-
-                aggiornaCompletamentoNome(lista, nomestudio, stato);
-
-                                
+                aggiornaCompletamentoNome(lista, nomestudio, stato);                
+                
                 break;    
 
             case 0: //Caso per uscire

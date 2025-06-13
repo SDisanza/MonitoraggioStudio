@@ -42,15 +42,25 @@ Studio inputStudio()
     int priorita = -1, durata = 0, dataScadenza = 0;
     int data = dataOggi(); // ottiene la data odierna
 
-    while (getchar() != '\n'); // pulizia del buffer di input
+    do{
+        printf("Inserisci il nome dello studio: ");
+        fgets(nome, sizeof(nome), stdin);
+        nome[strcspn(nome, "\n")] = 0;  // rimuove '\n' se presente
+        if (strlen(nome) == 0) 
+        {
+            printf("Errore nel nome, riprova ad inserirlo.\n");
+        }
+    } while (strlen(nome) == 0);
 
-    printf("Inserisci il nome dello studio: ");
-    fgets(nome, sizeof(nome), stdin);
-    nome[strcspn(nome, "\n")] = 0;  // rimuove '\n' se presente
-
-    printf("Inserisci il corso: ");
-    fgets(corso, sizeof(corso), stdin);
-    corso[strcspn(corso, "\n")] = 0;
+    do{
+        printf("Inserisci il corso: ");
+        fgets(corso, sizeof(corso), stdin);
+        corso[strcspn(corso, "\n")] = 0;
+        if (strlen(nome) == 0) 
+        {
+            printf("Errore nel corso, riprova ad inserirlo.\n");
+        }
+    }while (strlen(corso) == 0);
 
     while (priorita < 0 || priorita > 2) 
     {
@@ -72,14 +82,28 @@ Studio inputStudio()
         }
     }
 
-    
-
-    while (dataScadenza <= data) 
+    while (dataScadenza <= dataOggi() || !dataValida(dataScadenza)) 
     {
         printf("Inserisci la data di scadenza (formato AAAAMMGG): ");
+
         if (scanf("%d", &dataScadenza) != 1) 
         {
-            while (getchar() != '\n');
+            while (getchar() != '\n');  // pulizia input
+            printf("⚠️  Formato non valido. Inserire un numero intero.\n");
+            dataScadenza = 0;
+            continue;
+        }
+
+        if (!dataValida(dataScadenza)) 
+        {
+            printf("Data non reale. Controlla giorno, mese e anno.\n");
+            dataScadenza = 0;
+            continue;
+        }
+
+        if (dataScadenza <= dataOggi()) 
+        {
+            printf("La data deve essere successiva a oggi.\n");
             dataScadenza = 0;
         }
     }
@@ -116,32 +140,32 @@ int controlloStudio(Studio studio, int dataOggi)
     */
         if (studio == NULL) 
         {
-            printf("Errore: studio non trovato.\n");
+            printf("Errore: studio non trovato.\n\n");
             return -1;
         }
         
         // Controllo dello stato dello studio
     if (studio == NULL) 
     {
-            printf("Errore: studio non trovato nella lista.\n");
+            printf("Errore: studio non trovato nella lista.\n\n");
             return -1;
         }
         
         if (studio->completata == -1 && dataOggi >= studio->dataScadenza) 
         {
-            printf("ATTENZIONE: Lo studio \"%s\" è scaduto e non è stato iniziato.\n", studio->nome);
+            printf("ATTENZIONE: Lo studio \"%s\" è scaduto e non è stato iniziato.\n\n", studio->nome);
         } 
         else if (studio->completata == 0 && dataOggi >= studio->dataScadenza) 
         {
-            printf("ATTENZIONE: Lo studio \"%s\" è scaduto ma è ancora in corso.\n", studio->nome);
+            printf("ATTENZIONE: Lo studio \"%s\" è scaduto ma è ancora in corso.\n\n", studio->nome);
         } 
         else if (studio->completata == 1) 
         {
-            printf("Lo studio \"%s\" è stato completato\n", studio->nome);
+            printf("Lo studio \"%s\" è stato completato\n\n", studio->nome);
         } 
         else 
         {
-            printf("Lo studio \"%s\" è ancora in tempo.\n", studio->nome);
+            printf("Lo studio \"%s\" è ancora in tempo.\n\n", studio->nome);
         }
 }
 
@@ -159,24 +183,26 @@ int aggiornaCompletamento(Studio studio, int nuovoStato, const char *nomeStudio)
     }
     else if (studio == NULL) 
     {
-        printf("Errore: studio non trovato nella lista.\n");
+        printf("Errore: studio non trovato nella lista.\n\n");
         return -1;
     }
-    else if((strcasecmp(studio->nome, nomeStudio) != 0 )) 
+    else if ((strcasecmp(studio->nome, nomeStudio) != 0 ))
     {
-        printf("Nessuno studio trovato con il nome specificato.\n");
+        printf("Nessuno studio trovato con il nome specificato.\n\n");
         return -1;
     }
     else if (strcasecmp(studio->nome, nomeStudio) == 0 && studio->completata != nuovoStato) 
     {
         studio->completata = nuovoStato;
-        printf("Stato dello studio \"%s\" aggiornato a %d.\n", studio->nome, nuovoStato);
+        printf("Stato dello studio \"%s\" aggiornato a %d.\n\n", studio->nome, nuovoStato);
         return 1;
     }
-    else if(strcasecmp(studio->nome, nomeStudio) == 0 && studio->completata == nuovoStato) 
+    else if (strcasecmp(studio->nome, nomeStudio) == 0 && studio->completata == nuovoStato) 
     {
-        printf("Lo stato dello studio \"%s\" è già %d.\n", studio->nome, nuovoStato);
+        printf("Lo stato dello studio \"%s\" è già %d.\n\n", studio->nome, nuovoStato);
         return 0;
     }
+
+    //strcasecmp permette d'ignorare il case sensitive
       
 }

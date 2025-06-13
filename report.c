@@ -25,7 +25,7 @@ void generaReport(List lista)
     printf("Numero totale di studi: %d\n\n", sizeList(lista));
     printList(lista);
 
-    printf("\n========================\n");
+    printf("========================\n");
 }
 
 void aggiornaCompletamentoNome(List lista, char *nomeStudio, int nuovoStato) 
@@ -42,7 +42,8 @@ void aggiornaCompletamentoNome(List lista, char *nomeStudio, int nuovoStato)
         Studio studio = getListItem(lista, i);
         if((trovato = aggiornaCompletamento(studio, nuovoStato, nomeStudio)) >=-1 && trovato <=1)
         {
-            break;
+            generaReport(lista);
+            monitoraggioData(lista);
         };   
     }
 }
@@ -59,13 +60,12 @@ void monitoraggioData(List lista)
         return;
     }
 
-
     for(int i = 0; i < sizeList(lista); i++) 
     {
         Studio studio = getListItem(lista, i);
         if(studio != NULL) 
         {
-            controlloStudio(studio, dataOggi());
+            controlloStudio(studio, dataOggi());   
         } 
         else 
         {
