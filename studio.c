@@ -5,6 +5,8 @@
 #include"item.h"
 #include"list.h"
 #include"studio.h"
+#include"utils.h"
+
 
 
 typedef struct studio
@@ -31,8 +33,14 @@ Studio newStudio(char *nome, char *corso, int priorita, int durata, int dataScad
 
 Studio inputStudio() 
 {
+    /*  
+        Funzione per l'input dei dati dello studio
+        Chiede all'utente di inserire i dettagli dello studio e 
+        restituisce un nuovo oggetto Studio    
+    */
     char nome[100], corso[100];
     int priorita = -1, durata = 0, dataScadenza = 0;
+    int data = dataOggi(); // ottiene la data odierna
 
     while (getchar() != '\n'); // pulizia del buffer di input
 
@@ -47,7 +55,8 @@ Studio inputStudio()
     while (priorita < 0 || priorita > 2) 
     {
         printf("Inserisci la priorità (2 = alta, 1 = media, 0 = bassa): ");
-        if (scanf("%d", &priorita) != 1) {
+        if (scanf("%d", &priorita) != 1) 
+        {
             while (getchar() != '\n'); // pulizia input
             priorita = -1; // forza ripetizione
         }
@@ -56,16 +65,20 @@ Studio inputStudio()
     while (durata <= 0) 
     {
         printf("Inserisci la durata in minuti: ");
-        if (scanf("%d", &durata) != 1) {
+        if (scanf("%d", &durata) != 1) 
+        {
             while (getchar() != '\n');
             durata = 0;
         }
     }
 
-    while (dataScadenza <= 20250101) 
+    
+
+    while (dataScadenza <= data) 
     {
         printf("Inserisci la data di scadenza (formato AAAAMMGG): ");
-        if (scanf("%d", &dataScadenza) != 1) {
+        if (scanf("%d", &dataScadenza) != 1) 
+        {
             while (getchar() != '\n');
             dataScadenza = 0;
         }
@@ -78,36 +91,69 @@ Studio inputStudio()
 
 void outputStudio(Studio studio) 
 {
+    /*  
+        Funzione per l'output dei dati dello studio
+        Stampa i dettagli dello studio in un formato leggibile
+    */
     printf("Nome: %s, Corso: %s, Priorità: %d, Completata: %d, Durata: %d minuti, Data di Scadenza: %d\n", 
            studio->nome, studio->corso, studio->priorita, studio->completata, studio->durata, studio->dataScadenza);
 }
 
 void deleteStudio(Studio studio) 
 {
+    /*  
+        Funzione per deallocare la memoria dello studio
+        Libera la memoria allocata per lo studio
+    */
     free(studio);
 }
 
 int controlloStudio(Studio studio, int dataOggi) 
 {
-    if (studio == NULL) {
+    /*
+        Questa funzione controlla lo stato dello studio rispetto alla data odierna.
+        Se lo studio è scaduto o completato, stampa un messaggio appropriato.
+    */
+        if (studio == NULL) 
+        {
+            printf("Errore: studio non trovato.\n");
+            return -1;
+        }
+        
+        // Controllo dello stato dello studio
+    if (studio == NULL) 
+    {
             printf("Errore: studio non trovato nella lista.\n");
             return -1;
         }
         
-        if (studio->completata == -1 && dataOggi >= studio->dataScadenza) {
+        if (studio->completata == -1 && dataOggi >= studio->dataScadenza) 
+        {
             printf("ATTENZIONE: Lo studio \"%s\" è scaduto e non è stato iniziato.\n", studio->nome);
-        } else if (studio->completata == 0 && dataOggi >= studio->dataScadenza) {
+        } 
+        else if (studio->completata == 0 && dataOggi >= studio->dataScadenza) 
+        {
             printf("ATTENZIONE: Lo studio \"%s\" è scaduto ma è ancora in corso.\n", studio->nome);
-        } else if (studio->completata == 1) {
+        } 
+        else if (studio->completata == 1) 
+        {
             printf("Lo studio \"%s\" è stato completato\n", studio->nome);
-        } else {
+        } 
+        else 
+        {
             printf("Lo studio \"%s\" è ancora in tempo.\n", studio->nome);
         }
 }
 
 int aggiornaCompletamento(Studio studio, int nuovoStato, const char *nomeStudio) 
 {
-    if (nuovoStato < -1 || nuovoStato > 1) {
+    /*
+        Questa funzione aggiorna lo stato di completamento di uno studio specifico.
+        Se lo studio non viene trovato o se il nuovo stato non è valido, 
+        stampa un messaggio di errore.
+    */
+    if (nuovoStato < -1 || nuovoStato > 1) 
+    {
         printf("Errore: stato non valido. Deve essere -1, 0 o 1.\n");
         return -1;
     }

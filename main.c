@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include"studio.h"
 #include"report.h"
+#include"utils.h"
 
 int main()
 {
@@ -13,8 +14,11 @@ int main()
     List lista = newList();
 
     printf("Benvenuto nel monitoraggio dello studio!\n");
+    sleep(1);
     printf("Questo programma ti permette di tenere traccia dei tuoi studi e delle tue scadenze.\n");
+    sleep(1);
     printf("Puoi inserire nuovi studi, visualizzare quelli esistenti e generare report.\n");
+    sleep(1);
     
     do
     {
@@ -27,7 +31,7 @@ int main()
 
         switch(scelta)
         {
-            case 1:  
+            case 1:  //Caso per inserire un nuovo studio
                 system("clear");       
                 printf("Inserimento di un nuovo studio...\n");
                 sleep(2);
@@ -48,9 +52,8 @@ int main()
                     printf("\n\n");
                 } break;
 
-            case 2:
+            case 2: //Caso per generare il report
                 system("clear");
-                // Codice per generare il report
                 printf("Generazione del report...\n");
                 sleep(2);
                 system("clear");
@@ -61,37 +64,37 @@ int main()
                 }
                 else
                 {
-                    
                     generaReport(lista);
-                    printf("Report generato con successo!\n");
+                    monitoraggioData(lista);
+                    printf("Report generato con successo!\n\n");
                 }                
                 break;
 
-            case 3:
+            case 3: //Caso per aggiornare il progresso di uno studio
                 system("clear");
                 while(getchar() != '\n');
-                // Codice per aggiornare il progresso degli studi
                 printf("Inserisci il nome dello studio da aggiornare: ");
                 fgets(nomestudio, sizeof(nomestudio), stdin);
                 nomestudio[strcspn(nomestudio, "\n")] = 0; // rimuove newline
 
                 printf("Inserisci il nuovo stato (-1 = non iniziata, 0 = in corso, 1 = completata): ");
                 scanf("%d", &stato);
-                while(getchar() != '\n'); // pulisci buffer input
+                while(getchar() != '\n'); //Pulisce buffer input
 
                 aggiornaCompletamentoNome(lista, nomestudio, stato);
 
                                 
                 break;    
 
-            case 0:
+            case 0: //Caso per uscire
                 system("clear");
                 printf("CIAO.\n");
                 sleep(2);
                 system("clear");
                 freeList(lista);
                 break;
-            default:
+            default:    //Caso per scelta non valida
+                system("clear");
                 printf("Scelta non valida. Riprova.\n");
         }
     }while(scelta != 0);

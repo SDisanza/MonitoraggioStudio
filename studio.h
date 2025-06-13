@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include"item.h"
 #include"list.h"
+#include"utils.h"
 
 typedef struct studio *Studio;
 
