@@ -17,6 +17,6 @@ utils.o:
 	gcc -c utils.c
 mainTest.o:
 	gcc -c mainTest.c
-
+	
 clean:
 	rm -r item.o main.o mainTest.o list.o report.o studio.o utils.o a.out test.out
