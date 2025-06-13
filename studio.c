@@ -167,6 +167,7 @@ int controlloStudio(Studio studio, int dataOggi)
         {
             printf("Lo studio \"%s\" è ancora in tempo.\n\n", studio->nome);
         }
+        return 1;
 }
 
 int aggiornaCompletamento(Studio studio, int nuovoStato, const char *nomeStudio) 
